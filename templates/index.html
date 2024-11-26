@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Push-Up Detection</title>
+    <!-- Link to the JavaScript file -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </head>
+  <body>
+    <h1>Push-Up Detection</h1>
+    <button id="startDetection">Start Detection</button>
+    <button id="stopDetection">Stop Detection</button>
+    <div>
+      <img
+        id="videoFeed"
+        src=""
+        alt="Video feed will appear here"
+        style="display: none"
+      />
+    </div>
+    <!-- Link to the JavaScript file -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>
