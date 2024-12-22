@@ -1,38 +1,43 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const startDetectionBtn = document.getElementById('startDetection');
-    const stopDetectionBtn = document.getElementById('stopDetection');
+document.addEventListener("DOMContentLoaded", function () {
+  const dropdownButton = document.getElementById("dropdownButton");
+  const dropdownMenu = document.getElementById("dropdownMenu");
+  const videoFeed = document.getElementById("videoFeed");
 
-    // Check if the buttons are found to avoid null reference
-    if (startDetectionBtn && stopDetectionBtn) {
-        // Add event listener for the Start Detection button
-        startDetectionBtn.addEventListener('click', function() {
-            fetch('/start_detection') // Start detection
-                .then(response => {
-                    if (response.ok) {
-                        document.getElementById("videoFeed").src = "/video_feed"; // Start the video feed
-                        document.getElementById("videoFeed").style.display = "block"; // Show the video feed
-                    } else {
-                        console.error("Failed to start detection.");
-                    }
-                })
-                .catch(error => console.error("Error:", error));
-        });
+  // Toggle dropdown menu visibility
+  dropdownButton.addEventListener("click", () => {
+    dropdownMenu.classList.toggle("hidden");
+  });
 
-        // Add event listener for the Stop Detection button
-        stopDetectionBtn.addEventListener('click', function() {
-            fetch('/stop_detection') // Stop detection
-                .then(response => {
-                    if (response.ok) {
-                        const videoFeed = document.getElementById("videoFeed");
-                        videoFeed.src = ""; // Stop the video feed by clearing the src
-                        videoFeed.style.display = "none"; // Hide the video feed
-                    } else {
-                        console.error("Failed to stop detection.");
-                    }
-                })
-                .catch(error => console.error("Error:", error));
-        });
-    } else {
-        console.error("Buttons not found!");
+  // Handle exercise selection
+  dropdownMenu.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("dropdown-item")) {
+      const selectedExercise = event.target.getAttribute("data-exercise");
+      
+      // Hide dropdown menu
+      dropdownMenu.classList.add("hidden");
+
+      // Send the selected exercise to the backend
+      try {
+        videoFeed.src = `/video_feed?exercise=${selectedExercise}`;
+        videoFeed.style.display = "block";
+      } catch (error) {
+        console.error("Error starting detection:", error);
+      }
     }
+  });
+
+  // Stop detection
+  document.getElementById("stopDetection").addEventListener("click", async () => {
+    try {
+      const response = await fetch("/stop_detection");
+      if (response.ok) {
+        videoFeed.style.display = "none";
+        videoFeed.src = "";
+      } else {
+        console.error("Error stopping detection:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error stopping detection in catch :", error);
+    }
+  });
 });
