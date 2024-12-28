@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Push-Up Detection</title>
     <!-- Link css -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
   </head>
   <body>
-    <h1>Push-Up Detection</h1>
+    <h1>Workout Tracking</h1>
     <button id="stopDetection">Stop Detection</button>
+    <button id="resetButton">Reset</button>
     <div>
       <img
         id="videoFeed"
         src=""
         alt="Video feed will appear here"
-        style="display: none; width: 600px; height: 400px;"
+        style="display: none; width: 600px; height: 400px"
       />
     </div>
 
@@ -25,10 +29,22 @@
         Select Exercise
       </button>
       <div id="dropdownMenu" class="dropdown-menu hidden">
-        <a href="#" id="pushUp" class="dropdown-item" data-exercise="push_up">Push-up</a>
-        <a href="#" id="squat" class="dropdown-item" data-exercise="squat">Squat</a>
-        <a href="#" id="situp" class="dropdown-item" data-exercise="situp">Situp</a>
+        <a href="#" id="pushUp" class="dropdown-item" data-exercise="pushup"
+          >Push-up</a
+        >
+        <a href="#" id="squat" class="dropdown-item" data-exercise="squat"
+          >Squat</a
+        >
+        <a href="#" id="situp" class="dropdown-item" data-exercise="situp"
+          >Situp</a
+        >
       </div>
+    </div>
+    <div>
+      <div id="exerciseCounts"></div>
+    </div>
+    <div>
+      <div id="calorieburned"></div>
     </div>
     <!-- Link to the JavaScript file -->
   </body>

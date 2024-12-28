@@ -1,11 +1,11 @@
 import cv2
 import PoseModule as pm
 import numpy as np
+from state import update_exercise_count, get_exercise_counts
 
 
 def generate_situp_frames(cap, is_running):
     detector = pm.poseDetector()
-    count = 0
     form = 0
     direction = 0
     feedback = "Fix Form"
@@ -42,11 +42,11 @@ def generate_situp_frames(cap, is_running):
             if form == 1:
                 if hip_angle <= min_hip_angle and direction == 0 and abs(waist_y - heel_y) < 40:
                     feedback = "Down"       # now user should go down
-                    count += 0.5
+                    update_exercise_count("situp", 0.5)
                     direction = 1       # now user is in the up position
                 elif hip_angle >= max_hip_angle and direction == 1 and abs(waist_y - heel_y) < 40:
                     feedback = "Up"         # now user should go up
-                    count += 0.5
+                    update_exercise_count("situp", 0.5)
                     direction = 0       # now user is in the down position
                 else:
                     feedback = "Correct Your Form"
@@ -60,7 +60,7 @@ def generate_situp_frames(cap, is_running):
             
             # Draw sit-up Counter
             cv2.rectangle(img, (0, 380), (100, 480), (0, 255, 0), cv2.FILLED)
-            cv2.putText(img, str(int(count)), (25, 455), cv2.FONT_HERSHEY_PLAIN, 5,
+            cv2.putText(img, str(int(get_exercise_counts()['situp'])), (25, 455), cv2.FONT_HERSHEY_PLAIN, 5,
                         (255, 0, 0), 5)
 
             # Show Feedback (Fix Form / Up / Down)

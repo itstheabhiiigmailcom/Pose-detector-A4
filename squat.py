@@ -2,10 +2,10 @@
 import cv2
 import numpy as np
 from PoseModule import poseDetector
+from state import update_exercise_count, get_exercise_counts
 
 def generate_squat_frames(cap, is_running) :
     detector = poseDetector()
-    count = 0
     direction = 0
     form = 0
     threshold=100
@@ -53,7 +53,7 @@ def generate_squat_frames(cap, is_running) :
                         feedback = "Down"
                         # print("down wala if", hip, knee)
                         if direction == 0:
-                            count += 0.5
+                            update_exercise_count("squat", 0.5)
                             direction = 1
                     else:
                         feedback = "Fix Form"
@@ -71,7 +71,7 @@ def generate_squat_frames(cap, is_running) :
                     if knee < 90 and hip < 120 and (difference>threshold):
                         feedback = "Up"
                         if direction == 1:
-                            count += 0.5
+                            update_exercise_count("squat", 0.5)
                             # print("count hai 1")
                             direction = 0
                     else:
@@ -87,7 +87,7 @@ def generate_squat_frames(cap, is_running) :
 
             # Pushup counter
             cv2.rectangle(img, (0, 380), (100, 480), (0, 255, 0), cv2.FILLED)
-            cv2.putText(img, str(int(count)), (25, 455), cv2.FONT_HERSHEY_PLAIN, 5,
+            cv2.putText(img, str(int(get_exercise_counts()['squat'])), (25, 455), cv2.FONT_HERSHEY_PLAIN, 5,
                         (255, 0, 0), 5)
 
             # Feedback

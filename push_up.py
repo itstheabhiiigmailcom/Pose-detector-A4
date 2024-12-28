@@ -1,13 +1,13 @@
 import cv2
 import numpy as np
 from PoseModule import poseDetector
+from state import update_exercise_count, get_exercise_counts
 
 def generate_Push_up_frames(cap, is_running):
     detector = poseDetector()
     # Adjust these values for a more flexible range of motion
     min_elbow_angle = 90  # Min angle for 'Up' position
     max_elbow_angle = 160  # Max angle for 'Down' position
-    count = 0
     direction = 0
     form = 0
     feedback = "Fix Form"
@@ -39,18 +39,18 @@ def generate_Push_up_frames(cap, is_running):
             else:
                 is_pushup = False
 
-            # Form validation: Ensure body parts are aligned correctly before counting
+            # Form validation: Ensure body parts are aligned correctly before pushup_counting
             if elbow > max_elbow_angle and shoulder > 40 and hip > 160 and is_pushup:
                 form = 1  # Indicate that the form is correct
 
             if form == 1:
                 if elbow <= min_elbow_angle and direction == 0:  # Going up
                     feedback = "Up"
-                    count += 0.5  # Increment count (since we detect two phases)
+                    update_exercise_count("pushup", 0.5) # Increment pushup_count (since we detect two phases)
                     direction = 1  # Now we're in the 'Up' position
                 elif elbow >= max_elbow_angle and direction == 1:  # Going down
                     feedback = "Down"
-                    count += 0.5  # Increment count
+                    update_exercise_count("pushup", 0.5)  # Increment pushup_count
                     direction = 0  # Now we're in the 'Down' position
                 else:
                     feedback = "Fix Form"  # Feedback if form is incorrect
@@ -62,9 +62,9 @@ def generate_Push_up_frames(cap, is_running):
                 cv2.putText(img, f'{int(per)}%', (565, 430), cv2.FONT_HERSHEY_PLAIN, 2,
                             (255, 0, 0), 2)
 
-            # Draw Push-up Counter
+            # Draw Push-up pushup_counter
             cv2.rectangle(img, (0, 380), (100, 480), (0, 255, 0), cv2.FILLED)
-            cv2.putText(img, str(int(count)), (25, 455), cv2.FONT_HERSHEY_PLAIN, 5,
+            cv2.putText(img, str(int(get_exercise_counts()['pushup'])), (25, 455), cv2.FONT_HERSHEY_PLAIN, 5,
                         (255, 0, 0), 5)
 
             # Show Feedback (Fix Form / Up / Down)
