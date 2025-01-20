@@ -20,7 +20,7 @@ exercise_mets = {
 }
 
 # Lock for thread-safe operations
-exercise_lock = Lock()
+# exercise_lock = Lock()
 
 # Function to update the count for a specific exercise
 def update_exercise_count(exercise, value):
