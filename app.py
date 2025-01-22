@@ -5,6 +5,7 @@ from flask_cors import CORS
 from squat import generate_squat_frames 
 from push_up import generate_Push_up_frames
 from situp import generate_situp_frames
+from cardio import generate_Cardio_frames
 from state import get_exercise_counts, get_total_energy, reset_all
 
 
@@ -48,6 +49,8 @@ def video_feed():
         return Response(generate_squat_frames(cap, is_running), mimetype='multipart/x-mixed-replace; boundary=frame')
     elif exercise == 'situp':
         return Response(generate_situp_frames(cap, is_running), mimetype='multipart/x-mixed-replace; boundary=frame')
+    elif exercise == 'cardio':
+        return Response(generate_Cardio_frames(cap, is_running), mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         return "Invalid exercise selected!", 400
 

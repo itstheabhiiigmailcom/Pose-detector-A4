@@ -34,7 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("exerciseCounts").innerHTML = `
         Push-ups: ${data.pushup} <br>
         Sit-ups: ${data.situp} <br>
-        Squats: ${data.squat}
+        Squats: ${data.squat} <br>
+        Cardio: ${data.cardio}
     `;
   }, 1000);
 
@@ -77,7 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById("exerciseCounts").innerHTML = `
             Push-ups: 0 <br>
             Sit-ups: 0 <br>
-            Squats: 0
+            Squats: 0   <br>
+            Cardio: 0
           `;
           document.getElementById('calorieburned').innerHTML = `Energy Spent : 0`;
 

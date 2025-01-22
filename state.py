@@ -4,11 +4,13 @@ from threading import Lock
 pushup_count = 0
 situp_count = 0
 squat_count = 0
+cardio_count = 0
 
 # Locks for thread-safe operations
 pushup_lock = Lock()
 situp_lock = Lock()
 squat_lock = Lock()
+cardio_lock = Lock()
 
 # User weight in kilograms (example: 70 kg)
 user_weight = 70  
@@ -16,7 +18,8 @@ user_weight = 70
 exercise_mets = {
     'pushup': 8,
     'situp': 6,
-    'squat': 5
+    'squat': 5,
+    'cardio': 4
 }
 
 # Lock for thread-safe operations
@@ -34,20 +37,26 @@ def update_exercise_count(exercise, value):
     elif exercise == 'squat':
         with squat_lock:
             squat_count += value
+    elif exercise == 'cardio':
+        with squat_lock:
+            squat_count += value
 
 # Function to get individual exercise counts
 def get_exercise_counts():
-    global pushup_count, situp_count, squat_count
+    global pushup_count, situp_count, squat_count, cardio_count
     with pushup_lock:
         pushups = pushup_count
     with situp_lock:
         situps = situp_count
     with squat_lock:
         squats = squat_count
+    with cardio_lock:
+        cardio = cardio_count
     return {
         'pushup': pushups,
         'situp': situps,
-        'squat': squats
+        'squat': squats,
+        'cardio': cardio
     }
 
 # Function to calculate calories burned for an exercise
@@ -66,11 +75,13 @@ def get_total_energy():
         total_energy += calculate_calories('situp', situp_count)
     with squat_lock:
         total_energy += calculate_calories('squat', squat_count)
+    with cardio_lock:
+        total_energy += calculate_calories('cardio', cardio_count)
     return total_energy
 
 # Function to reset all counts and total energy
 def reset_all():
-    global pushup_count, situp_count, squat_count
+    global pushup_count, situp_count, squat_count, cardio_count
     # Reset counts
     with pushup_lock:
         pushup_count = 0
@@ -78,6 +89,8 @@ def reset_all():
         situp_count = 0
     with squat_lock:
         squat_count = 0
+    with cardio_lock:
+        cardio_count = 0
     
     # Reset total energy
     global total_energy_spent
