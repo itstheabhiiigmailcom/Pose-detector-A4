@@ -27,7 +27,7 @@ exercise_mets = {
 
 # Function to update the count for a specific exercise
 def update_exercise_count(exercise, value):
-    global pushup_count, situp_count, squat_count
+    global pushup_count, situp_count, squat_count, cardio_count
     if exercise == 'pushup':
         with pushup_lock:
             pushup_count += value
@@ -38,8 +38,8 @@ def update_exercise_count(exercise, value):
         with squat_lock:
             squat_count += value
     elif exercise == 'cardio':
-        with squat_lock:
-            squat_count += value
+        with cardio_lock:
+            cardio_count += value
 
 # Function to get individual exercise counts
 def get_exercise_counts():
