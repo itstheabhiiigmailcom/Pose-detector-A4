@@ -3,8 +3,8 @@ from threading import Lock
 # Shared variables for exercises
 pushup_count = 0
 situp_count = 0
-squat_count = 0
-cardio_count = 0
+squat_count = -0.5
+cardio_count = -0.5
 
 # Locks for thread-safe operations
 pushup_lock = Lock()
