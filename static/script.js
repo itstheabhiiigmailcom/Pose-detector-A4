@@ -2,16 +2,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const dropdownButton = document.getElementById("dropdownButton");
   const dropdownMenu = document.getElementById("dropdownMenu");
   const videoFeed = document.getElementById("videoFeed");
+  let selectedNow = null;
 
   // Toggle dropdown menu visibility
   dropdownButton.addEventListener("click", () => {
     dropdownMenu.classList.toggle("hidden");
   });
-
+  
   // Handle exercise selection
   dropdownMenu.addEventListener("click", async (event) => {
     if (event.target.classList.contains("dropdown-item")) {
       const selectedExercise = event.target.getAttribute("data-exercise");
+      selectedNow = event.target.getAttribute("data-exercise");
 
       // Hide dropdown menu
       dropdownMenu.classList.add("hidden");
@@ -32,10 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const response = await fetch("/exercise_count?exercise=all");
     const data = await response.json();
     document.getElementById("exerciseCounts").innerHTML = `
-        Push-ups: ${data.pushup} <br>
-        Sit-ups: ${data.situp} <br>
-        Squats: ${data.squat} <br>
-        Cardio: ${data.cardio}
+        ${selectedNow} : ${data[`${selectedNow}`]}
     `;
   }, 1000);
 
@@ -63,11 +62,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   // Reset everything to 0 and stop detection
+
+  document.getElementById("resetButton").preventDefault();
   document
     .getElementById("resetButton")
     .addEventListener("click", async () => {
       try {
         // Call the stop detection endpoint
+
         const response = await fetch("/reset")
         if (response.ok) {
           // Stop video feed
@@ -75,12 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
           videoFeed.src = "";
 
           // Reset exercise counts and energy data
-          document.getElementById("exerciseCounts").innerHTML = `
-            Push-ups: 0 <br>
-            Sit-ups: 0 <br>
-            Squats: 0   <br>
-            Cardio: 0
-          `;
+          document.getElementById("exerciseCounts").innerHTML = ``;
           document.getElementById('calorieburned').innerHTML = `Energy Spent : 0`;
 
           // Optionally, reset any other states as needed
